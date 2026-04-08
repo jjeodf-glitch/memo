@@ -391,12 +391,12 @@ class MainWindow(ctk.CTk):
     def _editor_undo(self):
         e = self._get_active_editor()
         if e:
-            e._undo()
+            e.undo()
 
     def _editor_redo(self):
         e = self._get_active_editor()
         if e:
-            e._redo()
+            e.redo()
 
     def _toggle_preview(self):
         pass  # preview mode can be extended

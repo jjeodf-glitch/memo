@@ -51,7 +51,7 @@ class NoteStore:
                 "notes": [n.to_dict() for n in self._notes.values()],
                 "categories": [c.to_dict() for c in self._categories.values()],
             }
-            tmp = DATA_FILE.with_suffix(".tmp")
+            tmp = DATA_FILE.parent / f"{DATA_FILE.name}.tmp"
             with open(tmp, "w", encoding="utf-8") as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
             tmp.replace(DATA_FILE)

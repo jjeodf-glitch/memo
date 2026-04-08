@@ -468,13 +468,13 @@ class NoteEditor(ctk.CTkFrame):
             self.after_cancel(self._auto_save_id)
         delay = self._config.get("auto_save_delay", 2000)
         self._auto_save_id = self.after(delay, self._autosave)
-        if self._on_change:
-            self._on_change("saving")
 
     def _autosave(self):
         self._auto_save_id = None
         if self._note is None:
             return
+        if self._on_change:
+            self._on_change("saving")
         title = self._title_var.get().strip()
         content = self._text.get("1.0", tk.END).rstrip("\n")
         if title != self._note.title or content != self._note.content:
@@ -540,8 +540,8 @@ class NoteEditor(ctk.CTkFrame):
         self._wrap_selection("*", "*")
 
     def insert_underline(self):
-        # Standard markdown doesn't have underline; wrap with __text__ (double underscore)
-        self._wrap_selection("__", "__")
+        # Non-standard extension: wrap with <u> HTML-style tag for underline
+        self._wrap_selection("<u>", "</u>")
 
     def _wrap_selection(self, before: str, after: str):
         try:
@@ -627,6 +627,12 @@ class NoteEditor(ctk.CTkFrame):
         except tk.TclError:
             pass
         return "break"
+
+    def undo(self):
+        return self._undo()
+
+    def redo(self):
+        return self._redo()
 
     # ── Theme ─────────────────────────────────────────────────────────────────
 

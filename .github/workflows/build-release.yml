@@ -42,11 +42,11 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install PyInstaller
-        run: pip install pyinstaller
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
       - name: Build executable
-        run: pyinstaller --onefile --windowed --name Memo src/memo.py
+        run: pyinstaller --onefile --windowed --name Memo src/app.py
 
       - name: Rename executable with version
         shell: bash
