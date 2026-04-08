@@ -1,0 +1,2 @@
+# 빌드 전용 의존성 (PyInstaller로 exe 빌드 시 사용)
+pyinstaller
