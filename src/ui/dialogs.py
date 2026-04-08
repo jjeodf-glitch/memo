@@ -176,9 +176,6 @@ class FindReplaceDialog(ctk.CTkToplevel):
 class TagDialog(ctk.CTkToplevel):
     """태그 관리 다이얼로그"""
 
-    PRESET_COLORS = ["#FF6B6B", "#FFD93D", "#6BCB77", "#4D96FF",
-                     "#C77DFF", "#FF9F43", "#48DBFB", "#FF6B9D"]
-
     def __init__(self, master, note, store, config, callback=None, **kwargs):
         super().__init__(master, **kwargs)
         self._note = note

@@ -540,8 +540,8 @@ class NoteEditor(ctk.CTkFrame):
         self._wrap_selection("*", "*")
 
     def insert_underline(self):
-        # No markdown underline; use HTML-style or just wrap
-        self._wrap_selection("<u>", "</u>")
+        # Standard markdown doesn't have underline; wrap with __text__ (double underscore)
+        self._wrap_selection("__", "__")
 
     def _wrap_selection(self, before: str, after: str):
         try:
