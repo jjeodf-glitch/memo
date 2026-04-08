@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
+    inputs:
+      version:
+        description: '릴리스 버전 (예: v1.0.0)'
+        required: true
 
 permissions:
   contents: write
@@ -16,6 +20,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Determine version
+        id: version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION="${{ github.ref_name }}"
+          fi
+          if [ -z "$VERSION" ]; then
+            echo "Error: version is empty"
+            exit 1
+          fi
+          if [[ ! "$VERSION" =~ ^v ]]; then
+            VERSION="v${VERSION}"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -26,9 +48,14 @@ jobs:
       - name: Build executable
         run: pyinstaller --onefile --windowed --name Memo src/memo.py
 
-      - name: Upload Release
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Rename executable with version
+        shell: bash
+        run: mv dist/Memo.exe "dist/Memo-${{ steps.version.outputs.version }}.exe"
+
+      - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/Memo.exe
+          tag_name: ${{ steps.version.outputs.version }}
+          name: "Memo ${{ steps.version.outputs.version }}"
+          files: dist/Memo-${{ steps.version.outputs.version }}.exe
           generate_release_notes: true
