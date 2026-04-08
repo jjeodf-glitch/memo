@@ -2,12 +2,11 @@
 from __future__ import annotations
 import json
 import os
+import sys
 from pathlib import Path
 from typing import List, Optional
 
-import sys
-import os as _os
-sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from models.note import Note
 from models.category import Category, SYSTEM_ALL, SYSTEM_PINNED, SYSTEM_TRASH
